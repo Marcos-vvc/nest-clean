@@ -2,6 +2,7 @@ import { TaksEntity } from 'src/modules/Task/entities/taks.entity'
 
 export class UserEntity {
   id: number
+  name: string
   email: string
   password: string
   createdAt: Date
@@ -11,6 +12,7 @@ export class UserEntity {
 
   constructor(
     id: number,
+    name: string,
     email: string,
     password: string,
     createdAt: Date,
@@ -18,6 +20,7 @@ export class UserEntity {
     task?: TaksEntity,
   ) {
     this.id = id ?? 0
+    this.name = name ?? ''
     this.email = email ?? ''
     this.password = password ?? ''
     this.createdAt = createdAt ?? new Date()
