@@ -8,26 +8,27 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
 
-  questions Question[]
+  task Task[]
 
   @@map("users")
 }
 
-model Question {
-  id        String    @id @default(uuid())
-  title     String
-  slug      String    @unique
-  content   String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-  authorId  String    @map("author_id")
+model Task {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  userId      Int
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
 
-  author User @relation(fields: [authorId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  @@map("questions")
+  @@map("tasks")
 }
