@@ -10,6 +10,10 @@ export class UserRepository {
     return await this.prismaService.user.create({ data: user })
   }
 
+  async find(query: Prisma.UserFindManyArgs) {
+    return await this.prismaService.user.findMany(query)
+  }
+
   async findByEmail(email: string) {
     const data = await this.prismaService.user.findFirst({ where: { email } })
 

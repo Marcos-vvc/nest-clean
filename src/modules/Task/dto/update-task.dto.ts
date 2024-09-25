@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator'
 
-export class CreateTaskDto {
+export class UpdateTaskDto {
   @IsString()
   title: string
 
