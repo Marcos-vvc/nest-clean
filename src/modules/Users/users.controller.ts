@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   UseGuards,
@@ -16,7 +17,7 @@ import { FindUserDto } from './dto/find-user.dto'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('create')
+  @Post('create-user')
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto)
   }
@@ -28,7 +29,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  async getUser(@Param('id') id: number) {
+  async getUser(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.findById(id)
   }
 }

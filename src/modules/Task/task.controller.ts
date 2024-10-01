@@ -19,6 +19,7 @@ export class TaskController {
   constructor(private readonly taskService: TaksService) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   async find() {
     return this.taskService.find()
   }
@@ -31,11 +32,13 @@ export class TaskController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard)
   async update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
     return await this.taskService.update(updateTaskDto, id)
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard)
   async delete(@Param('id') id: number) {
     return await this.taskService.delete(id)
   }

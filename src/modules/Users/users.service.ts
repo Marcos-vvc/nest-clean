@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { UserRepository } from './repository/users.repository'
 import * as bcrypt from 'bcrypt'
 import { Prisma } from '@prisma/client'
@@ -11,10 +11,19 @@ export class UsersService {
   async create(createUserDto: Prisma.UserCreateInput) {
     const hashPassword = await bcrypt.hash(createUserDto.password, 10)
 
-    return await this.userRepository.create({
+    const existingUser = await this.userRepository.findByEmail(
+      createUserDto.email,
+    )
+    if (existingUser) {
+      throw new BadRequestException('Email is already in use')
+    }
+
+    const createUser = await this.userRepository.create({
       ...createUserDto,
       password: hashPassword,
     })
+
+    return createUser
   }
 
   async find(query: FindUserDto) {
@@ -32,11 +41,7 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    const data = await this.userRepository.findByEmail(email)
-
-    if (data) {
-      throw new Error('Email already registered')
-    }
+    return await this.userRepository.findByEmail(email)
   }
 
   async findById(id: number) {
